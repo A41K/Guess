@@ -89,9 +89,17 @@ const movies = [
     "Gentlemen.mp4",
 ]; // Manually list all movie files
 
-    let score = 0;
-    let currentMovie = "";
-    let answered = false;
+let score = localStorage.getItem("score") ? parseInt(localStorage.getItem("score")) : 0;
+let usedMovies = localStorage.getItem("usedMovies") ? JSON.parse(localStorage.getItem("usedMovies")) : [];
+let currentMovie = "";
+let answered = false;
+
+document.getElementById("score").innerText = `Score: ${score}`; // Load saved score
+
+function saveProgress() {
+    localStorage.setItem("score", score);
+    localStorage.setItem("usedMovies", JSON.stringify(usedMovies));
+}
 
     function checkAnswer() {
     if (answered) return; // Prevent multiple answers for the same movie
@@ -123,6 +131,8 @@ const movies = [
         wrongSound.play(); // Play buzzer sound
     }
 
+    saveProgress(); // Save the updated score
+
     // Disable input and button until the next round
     userGuessInput.disabled = true;
     submitButton.disabled = true;
@@ -144,7 +154,7 @@ window.onload = function () {
     moviePlayer.pause(); // Ensure it does not start automatically
 };
 
-let usedMovies = []; // Store movies that have already been played
+
 
 function loadNewClip() {
     if (movies.length === 0) return alert("No movies found!");
@@ -160,6 +170,7 @@ function loadNewClip() {
     } while (usedMovies.includes(randomMovie)); // Keep picking until we get an unused movie
 
     usedMovies.push(randomMovie); // Add to used list
+    saveProgress(); // Save the updated score
     currentMovie = randomMovie.replace(/\..+$/, ""); // Remove file extension
 
     console.log("Selected movie:", currentMovie);
