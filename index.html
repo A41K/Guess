@@ -86,6 +86,7 @@ const movies = [
     "Spiderman.mp4",
     "Troja.mp4",
     "Batman.mp4",
+    "Gentlemen.mp4",
 ]; // Manually list all movie files
 
     let score = 0;
@@ -130,7 +131,7 @@ const movies = [
     setTimeout(() => {
         userGuessInput.disabled = false;
         submitButton.disabled = false;
-    }, 1000);
+    }, 2000);
 
     setTimeout(() => {
         loadNewClip();
@@ -143,17 +144,29 @@ window.onload = function () {
     moviePlayer.pause(); // Ensure it does not start automatically
 };
 
+let usedMovies = []; // Store movies that have already been played
+
 function loadNewClip() {
     if (movies.length === 0) return alert("No movies found!");
+
+    // Reset usedMovies if all movies have been played
+    if (usedMovies.length === movies.length) {
+        usedMovies = [];
+    }
+
+    let randomMovie;
+    do {
+        randomMovie = movies[Math.floor(Math.random() * movies.length)];
+    } while (usedMovies.includes(randomMovie)); // Keep picking until we get an unused movie
+
+    usedMovies.push(randomMovie); // Add to used list
+    currentMovie = randomMovie.replace(/\..+$/, ""); // Remove file extension
+
+    console.log("Selected movie:", currentMovie);
 
     answered = false; // ✅ Reset so the user can answer again
     document.getElementById("movieGuess").value = ""; // Clear input
     document.getElementById("correctMovie").style.display = "none"; // Hide previous correct answer
-
-    const randomMovie = movies[Math.floor(Math.random() * movies.length)];
-    currentMovie = randomMovie.replace(/\..+$/, "");
-
-    console.log("Selected movie:", currentMovie);
 
     const moviePlayer = document.getElementById("moviePlayer");
     const movieSource = document.getElementById("movieSource");
