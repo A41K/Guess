@@ -61,7 +61,6 @@
             font-size: 35px;
             cursor: pointer;
         }
-
         #answer-form {
             margin-top: 20px;
         }
@@ -97,26 +96,43 @@
             { album: "DAMN.", song: "LUST" },
             { album: "DAMN.", song: "PRIDE" },
             { album: "DAMN.", song: "XXX" },
-            { album: "DAMN.", song: "YAH" }
+            { album: "DAMN.", song: "YAH" },
+            { album: "TPAB", song: "Alright" },
+            { album: "TPAB", song: "Complexion" },
+            { album: "TPAB", song: "Hood Politics" },
+            { album: "TPAB", song: "How Much A Dollar Cost" },
+            { album: "TPAB", song: "i" },
+            { album: "TPAB", song: "Instutionalized" },
+            { album: "TPAB", song: "King Kunta" },
+            { album: "TPAB", song: "Momma" },
+            { album: "TPAB", song: "Mortal Man" },
+            { album: "TPAB", song: "The Blacker The Berry" },
+            { album: "TPAB", song: "These Walls" },
+            { album: "TPAB", song: "u" },
+            { album: "TPAB", song: "Wesley's Theory" },
+            { album: "TPAB", song: "You Ain't Gotta Lie" },
+            { album: "GKMC", song: "Backseat Freestyle" },
+
         ];
         
         let correctAlbum = "";
         let correctSong = "";
         let score = 0;
-
         function loadNextSong() {
             let randomEntry = songs[Math.floor(Math.random() * songs.length)];
             correctAlbum = randomEntry.album;
             correctSong = randomEntry.song;
-            document.getElementById("album-cover").src = "";
-            document.getElementById("album-cover").style.display = "none";
+            
+            document.getElementById("album-cover").src = "default-cover.png";
+            document.getElementById("album-cover").style.display = "block";
+            document.getElementById("vinyl-cover").src = "";
+            document.getElementById("vinyl-cover").style.display = "none";
             document.getElementById("song-input").value = "";
             document.getElementById("wrong-answer").style.display = "none";
             document.getElementById("next-button").style.display = "none";
-            document.getElementById("audio-player").src = "";
+            document.getElementById("audio-player").src = `songs/${correctSong}.mp3`;
             document.getElementById("submit-button").disabled = false;
         }
-
         function playRandomSong() {
             let audio = document.getElementById("audio-player");
             audio.src = `songs/${correctSong}.mp3`;
@@ -129,12 +145,9 @@
             let wrongAnswerDisplay = document.getElementById("wrong-answer");
             let nextButton = document.getElementById("next-button");
             
-            
             if (input.toLowerCase() === correctSong.toLowerCase()) {
                 document.getElementById("album-cover").src = `covers/${correctAlbum}.png`; 
-                document.getElementById("vinyl-cover").src = `covers/${correctAlbum}.png`; 
                 document.getElementById("album-cover").style.display = "block";
-                document.getElementById("vinyl-cover").style.display = "block";
                 wrongAnswerDisplay.style.display = "none";
                 score++;
             } else {
@@ -144,6 +157,7 @@
             }
             document.getElementById("score").textContent = `Score: ${score}`;
             nextButton.style.display = "inline";
+            document.getElementById("submit-button").disabled = false;
         }
 
         loadNextSong();
