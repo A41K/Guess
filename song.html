@@ -49,26 +49,6 @@
             object-fit: cover;
             display: none;
         }
-        .vinyl {
-            position: absolute;
-            right: -40px;
-            width: 100px;
-            height: 100px;
-            background: url('vinyl.png') no-repeat center center;
-            background-size: cover;
-            border-radius: 50%;
-            animation: spin 4s linear infinite;
-        }
-        .vinyl img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
         .wrong-answer {
             color: red;
             font-weight: bold;
@@ -102,25 +82,25 @@
     <input type="text" id="song-input" placeholder="Enter song name">
     <button onclick="checkAnswer()">Submit</button>
     <p id="score">Score: 0</p>
-    <span class="next-button" id="next-button" onclick="loadNextSong()">➡</span>
+    <span class="next-button" id="next-button" onclick="loadNextSong()">▶️</span>
     <audio id="audio-player" controls style="display:none;"></audio>
     
     <script>
         let songs = [
-            { album: "DAMN.", song: "BLOOD." },
-            { album: "DAMN.", song: "DNA." },
-            { album: "DAMN.", song: "DUCKWORTH." },
-            { album: "DAMN.", song: "ELEMENT." },
-            { album: "DAMN.", song: "FEAR." },
-            { album: "DAMN.", song: "FEEL." },
-            { album: "DAMN.", song: "GOD." },
-            { album: "DAMN.", song: "HUMBLE." },
-            { album: "DAMN.", song: "LOVE." },
-            { album: "DAMN.", song: "LOYALTY." },
-            { album: "DAMN.", song: "LUST." },
-            { album: "DAMN.", song: "PRIDE." },
-            { album: "DAMN.", song: "XXX." },
-            { album: "DAMN.", song: "YAH." }
+            { album: "DAMN.", song: "BLOOD" },
+            { album: "DAMN.", song: "DNA" },
+            { album: "DAMN.", song: "DUCKWORTH" },
+            { album: "DAMN.", song: "ELEMENT" },
+            { album: "DAMN.", song: "FEAR" },
+            { album: "DAMN.", song: "FEEL" },
+            { album: "DAMN.", song: "GOD" },
+            { album: "DAMN.", song: "HUMBLE" },
+            { album: "DAMN.", song: "LOVE" },
+            { album: "DAMN.", song: "LOYALTY" },
+            { album: "DAMN.", song: "LUST" },
+            { album: "DAMN.", song: "PRIDE" },
+            { album: "DAMN.", song: "XXX" },
+            { album: "DAMN.", song: "YAH" }
         ];
         
         let correctAlbum = "";
@@ -132,13 +112,12 @@
             correctAlbum = randomEntry.album;
             correctSong = randomEntry.song;
             document.getElementById("album-cover").src = "";
-            document.getElementById("vinyl-cover").src = "";
             document.getElementById("album-cover").style.display = "none";
-            document.getElementById("vinyl-cover").style.display = "none";
             document.getElementById("song-input").value = "";
             document.getElementById("wrong-answer").style.display = "none";
             document.getElementById("next-button").style.display = "none";
             document.getElementById("audio-player").src = "";
+            document.getElementById("submit-button").disabled = false;
         }
 
         function playRandomSong() {
