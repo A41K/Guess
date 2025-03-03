@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,69 +16,243 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="footer.css">
-    <title>Guessing Games</title>
+    <title>Guess The Movie</title>
     <style>
-        h1{
-            font-family: playwrite in;
-            font-size: 50px;
-            color: #000;
-            text-align: center;
-            margin-top: 100px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
         body {
-            text-align: center;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #0d1117;
+            color: #e6edf3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
         }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        h1 {
+            font-family: 'Playwrite IN', cursive;
+            font-size: 3.5rem;
+            color: #f0f6fc;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .movie-wrapper {
+            width: 100%;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
         .MovieClip {
-            outline: 5px solid black;
-            width: 480px;
-            height: 270px;
-            margin: 20px auto;
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             display: block;
+            background-color: #161b22;
+            border: 3px solid #30363d;
         }
-        button, input {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
+        
+        .score-display {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #58a6ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
+        
         .answer-section {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
             text-align: center;
-            margin-top: 20px;
+            background-color: #161b22;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #30363d;
         }
-        @media screen and (max-width: 500px) {
-            .MovieClip {
-        outline: 5px solid black;
-        width: 90%; /* Adjust width dynamically */
-        max-width: 480px; /* Prevent it from getting too big */
-        height: auto; /* Maintain aspect ratio */
-        margin: 20px auto;
-        display: block;
-    }
-
+        
+        .answer-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            background-color: #0d1117;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.3);
+        }
+        
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            background-color: #238636;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #2ea043;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        #correctMovie {
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            background-color: rgba(248, 81, 73, 0.1);
+            border: 1px solid #f85149;
+            color: #f85149;
+        }
+        
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #30363d;
+            color: #e6edf3;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .home-button:hover {
+            background-color: #484f58;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 2rem auto;
+            font-size: 1.1rem;
+            color: #8b949e;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #8b949e;
+            border-top: 1px solid #30363d;
+            margin-top: 2rem;
+        }
+        
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
             
+            .score-display {
+                top: 10px;
+                right: 10px;
+                font-size: 0.9rem;
+                padding: 5px 10px;
+            }
+            
+            .answer-form {
+                flex-direction: column;
+            }
+            
+            input[type="text"] {
+                width: 100%;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Guess The Movie</h1>
+    <a href="index.html" class="home-button">
+        <i class="fa fa-home"></i>
+    </a>
     
-    <video id="moviePlayer" class="MovieClip" controls>
-        <source id="movieSource" src="" type="video/mp4">
-    </video>
+    <div class="container">
+        <h1>Guess The Movie</h1>
+        
+        <p class="instructions">Watch the movie clip and guess the title. Type your answer in the box below and submit!</p>
+        
+        <div class="movie-wrapper">
+            <div id="score" class="score-display">Score: 0</div>
+            <video id="moviePlayer" class="MovieClip" controls>
+                <source id="movieSource" src="" type="video/mp4">
+            </video>
+        </div>
+        
+        <div class="answer-section">
+            <p id="correctMovie" style="display: none;"></p>
+            <div class="answer-form">
+                <input type="text" id="movieGuess" placeholder="Enter movie name...">
+                <button onclick="checkAnswer()">Submit</button>
+            </div>
+        </div>
+    </div>
 
-<!-- Buzzer sound -->
     <audio id="wrongSound">
         <source src="Wrong.mp3" type="audio/mpeg">
     </audio>
     
-    <!-- Answer Form & Score (Now Centered Under the Movie) -->
-    <div class="answer-section">
-        <p id="correctMovie" style="color: red; font-size: 18px; display: none;"></p>
-        <input type="text" id="movieGuess" placeholder="Enter movie name">
-        <button onclick="checkAnswer()">Submit</button>
-        <p id="score">Score: 0</p>
-    </div>
-
     <footer class="footer">
         This was made by Andrew a.k.a A41K
     </footer>
@@ -112,7 +287,7 @@ function saveProgress() {
     localStorage.setItem("usedMovies", JSON.stringify(usedMovies));
 }
 
-    function checkAnswer() {
+function checkAnswer() {
     if (answered) return; // Prevent multiple answers for the same movie
 
     const userGuessInput = document.getElementById("movieGuess");
@@ -120,7 +295,7 @@ function saveProgress() {
     const correctMovieDisplay = document.getElementById("correctMovie");
     const wrongSound = document.getElementById("wrongSound");
 
-        // Normalize user input and movie name (lowercase + remove accents)
+    // Normalize user input and movie name (lowercase + remove accents)
     const normalizeText = (text) => text
         .toLowerCase()
         .normalize("NFD") // Decomposes special characters (e.g., á -> a + ´)
@@ -152,7 +327,7 @@ function saveProgress() {
     setTimeout(() => {
         userGuessInput.disabled = false;
         submitButton.disabled = false;
-    }, 2000);
+    }, 1000);
 
     setTimeout(() => {
         loadNewClip();
@@ -164,8 +339,6 @@ window.onload = function () {
     const moviePlayer = document.getElementById("moviePlayer");
     moviePlayer.pause(); // Ensure it does not start automatically
 };
-
-
 
 function loadNewClip() {
     if (movies.length === 0) return alert("No movies found!");
@@ -202,10 +375,7 @@ function loadNewClip() {
 
     // Auto-play fix (some browsers block autoplay)
     moviePlayer.play().catch(error => console.error("Autoplay blocked:", error));
-
-    window.onload = loadNewClip;
 }
-
     </script>
 </body>
 </html>

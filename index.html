@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,33 +17,198 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="footer.css">
     <title>Guessing Games</title>
- <style>
-    h1{
-        font-family: playwrite in;
-        font-size: 50px;
-        color: #000;
-        text-align: center;
-        margin-top: -320px;
-    }
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        background-color: white;
-        font-family: Arial, sans-serif;
-    }
- </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-family: 'Playwrite IN', cursive;
+            font-size: 3.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .game-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .game-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 320px;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .movie-img {
+            background-image: url('/api/placeholder/320/180');
+        }
+        
+        .song-img {
+            background-image: url('/api/placeholder/320/180');
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            font-family: 'Josefin Sans', sans-serif;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .card-desc {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .play-btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .play-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .instructions {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .instructions h2 {
+            font-family: 'Josefin Sans', sans-serif;
+            margin-bottom: 1rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #333;
+            color: #fff;
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .game-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Guessing Games</h1>
-    <a href="movie.html"><h2>MOVIES</h2></a>
-    <a href="song.html"><h2>SONGS</h2></a>
-
+    <header>
+        <h1>Guessing Games</h1>
+        <p class="subtitle">Test your knowledge of movies and songs</p>
+    </header>
+    
+    <div class="container">
+        <div class="instructions">
+            <h2>Welcome to Guessing Games!</h2>
+            <p>Choose one of the games below to test your knowledge. Can you identify movies from short clips or songs from audio snippets? Give it a try and see how high you can score!</p>
+        </div>
+        
+        <div class="game-cards">
+            <a href="movie.html" class="game-card">
+                <div class="card-img movie-img"></div>
+                <div class="card-content">
+                    <h2 class="card-title">Movie Guessing</h2>
+                    <p class="card-desc">Can you identify these famous films from short video clips? Test your movie knowledge!</p>
+                    <div class="play-btn">Play Now</div>
+                </div>
+            </a>
+            
+            <a href="song.html" class="game-card">
+                <div class="card-img song-img"></div>
+                <div class="card-content">
+                    <h2 class="card-title">Song Guessing</h2>
+                    <p class="card-desc">Listen to clips from popular songs and guess the title. Perfect for music lovers!</p>
+                    <div class="play-btn">Play Now</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
     <footer class="footer">
         This was made by Andrew a.k.a A41K
     </footer>
-
 </body>
 </html>

@@ -1,89 +1,512 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="icon.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
-    <meta name="view-transition" content="same-origin">
-    <link href="https://fonts.googleapis.com/css2?family=Playwrite+IN:wght@100..400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="footer.css">
-    <title>Song Guessing Game</title>
+    <meta name="view-transition" content="same-origin">
+    <title>Guess The Song</title>
     <style>
-        h1 {
-            font-family: playwrite in;
-            font-size: 50px;
-            color: #000;
-            text-align: center;
-            margin-top: -25px;
+        :root {
+            --primary: #bd4be0;
+            --primary-hover: #d04ff0;
+            --primary-light: rgba(189, 75, 224, 0.1);
+            --bg-gradient-start: #1e0a2b;
+            --bg-gradient-end: #3b0d4a;
+            --card-bg: rgba(0, 0, 0, 0.3);
+            --wrong-color: #ff4b5c;
+            --text-light: rgba(255, 255, 255, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.1);
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient-start);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background-color: white;
-            font-family: Arial, sans-serif;
+            padding: 2rem 1rem;
+            position: relative;
+            z-index: 1;
         }
+
+        /* Background elements */
+        .bg-decoration {
+            position: fixed;
+            bottom: -10%;
+            left: -5%;
+            width: 35%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(189, 75, 224, 0.15) 0%, rgba(189, 75, 224, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(50px);
+        }
+
+        .bg-decoration:nth-child(2) {
+            top: -15%;
+            right: -10%;
+            left: auto;
+            width: 45%;
+            height: 70%;
+        }
+        
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            letter-spacing: -1px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+        
         .album-container {
             position: relative;
-            width: 250px;
-            height: 250px;
+            width: clamp(250px, 80vw, 320px);
+            height: clamp(250px, 80vw, 320px);
+            margin: 0 auto 2.5rem auto;
             cursor: pointer;
-            background-color: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 10px;
         }
+        
+        .album-container:hover {
+            transform: scale(1.05) rotate(1deg);
+        }
+        
         .album-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
         }
+
+        .album-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+
+        .album-container:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(189, 75, 224, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(189, 75, 224, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(189, 75, 224, 0);
+            }
+        }
+        
+        .album-container::after {
+            content: '▶ Play';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .album-container:hover::after {
+            opacity: 1;
+        }
+        
+        .game-content {
+            width: 100%;
+            max-width: 550px;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 
+                        0 1px 3px rgba(255, 255, 255, 0.05),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.07);
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+        
         .wrong-answer {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: var(--wrong-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background-color: rgba(255, 75, 92, 0.1);
+            text-align: center;
             display: none;
+            border-left: 3px solid var(--wrong-color);
+            animation: fadeIn 0.3s ease-out;
         }
-        .next-button {
-            display: none;
-            margin-left: 10px;
-            font-size: 35px;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            flex-wrap: wrap;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 14px;
+            background-color: var(--input-bg);
+            color: white;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        input[type="text"]::placeholder {
+            color: var(--text-light);
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(189, 75, 224, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        button {
+            padding: 14px 28px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 14px;
+            background-color: var(--primary);
+            color: white;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(189, 75, 224, 0.3);
+            min-width: 110px;
+            font-family: 'Poppins', sans-serif;
         }
-        #answer-form {
+        
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(189, 75, 224, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(189, 75, 224, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        #score {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        #score::before {
+            content: '🎵';
+            font-size: 1.4rem;
+        }
+        
+        .next-button {
+            display: inline-block;
+            margin-top: 25px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            display: none;
+            padding: 10px 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            text-align: center;
+            width: auto;
+            margin: 10px auto 0;
+        }
+
+        .next-button i {
+            margin-right: 8px;
+        }
+        
+        .next-button:hover {
+            color: white;
+            transform: translateY(-2px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        audio {
+            width: 100%;
             margin-top: 20px;
+            border-radius: 14px;
+            height: 40px;
+        }
+        
+        audio::-webkit-media-controls-panel {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .home-button:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 2.5rem auto;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px 25px;
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .instructions strong {
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--primary-hover);
+        }
+        
+        @media screen and (max-width: 768px) {
+            h1 {
+                margin-top: 2rem;
+            }
+            
+            .album-container {
+                width: min(280px, 80vw);
+                height: min(280px, 80vw);
+            }
+            
+            .game-content {
+                padding: 20px;
+            }
+
+            .instructions {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+
+            .album-container {
+                margin-bottom: 1.5rem;
+            }
+
+            audio {
+                height: 36px;
+            }
+
+            .next-button {
+                width: 100%;
+            }
+        }
+
+        /* Hidden vinyl element */
+        #vinyl-cover {
+            display: none;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <h1>Guess the Song</h1>
-    <p id="wrong-answer" class="wrong-answer"></p>
-    <div class="album-container" onclick="playRandomSong()">
-        <img id="album-cover" src="" alt="Album Cover">
-        <div class="vinyl">
-            <img id="vinyl-cover" src="" alt="Mini Album Cover">
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+    
+    <a href="index.html" class="home-button">
+        <i class="fas fa-home"></i>
+    </a>
+    
+    <div class="container">
+        <h1>Guess The Song</h1>
+        
+        <p class="instructions"><strong>How to play:</strong> Click on the album cover to play a clip, then guess the song title. Be exact with spelling and capitalization!</p>
+        
+        <div class="album-container" onclick="playRandomSong()">
+            <img id="album-cover" src="default-cover.png" alt="Album Cover">
+            <img id="vinyl-cover" src="" alt="" style="display: none;">
+        </div>
+        
+        <div class="game-content">
+            <p id="wrong-answer" class="wrong-answer"></p>
+            
+            <p id="score">Score: 0</p>
+            
+            <div class="input-container">
+                <input type="text" id="song-input" placeholder="Enter song name..." autocomplete="off">
+                <button id="submit-button" onclick="checkAnswer()">Submit</button>
+            </div>
+            
+            <div class="next-button" id="next-button" onclick="loadNextSong()">
+                <i class="fas fa-forward"></i>Next Song
+            </div>
+            
+            <audio id="audio-player" controls style="display:none;"></audio>
         </div>
     </div>
-    <input type="text" id="song-input" placeholder="Enter song name">
-    <button onclick="checkAnswer()">Submit</button>
-    <p id="score">Score: 0</p>
-    <span class="next-button" id="next-button" onclick="loadNextSong()">▶️</span>
-    <audio id="audio-player" controls style="display:none;"></audio>
     
     <footer class="footer">
-        This was made by Andrew a.k.a A41K
+        Made with <span style="color: #ff4b5c;">♥</span> by Andrew a.k.a A41K
     </footer>
 
     <script>
